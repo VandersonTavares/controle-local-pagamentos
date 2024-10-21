@@ -225,8 +225,10 @@ const loadTaskLocal = () => {
 };
 
 const deleteTask = (index) => {
-  clients.value.splice(index, 1);
-  setTaskLocal();
+  if (confirm("Tem certeza que deseja deletar este pagamento?")) {
+    clients.value.splice(index, 1);
+    setTaskLocal();
+  }
 };
 
 const totalPagamentos = computed(() => {
@@ -237,17 +239,19 @@ const totalPagamentos = computed(() => {
 });
 
 const exportToJson = () => {
-  const jsonString = JSON.stringify(clients.value, null, 2);
-  const blob = new Blob([jsonString], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
+  if (confirm("Tem certeza que deseja exportar os dados para JSON?")) {
+    const jsonString = JSON.stringify(clients.value, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "clientes.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "clientes.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 };
 
 const handleFileUpload = (event) => {
